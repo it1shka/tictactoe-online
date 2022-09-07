@@ -66,3 +66,14 @@ class Chat {
 }
 
 export default new Chat(false)
+
+export function onFormMessageSubmit(onSubmit: (message: string) => void) {
+  const form = document
+    .querySelector('#send-message-form') as HTMLFormElement
+  const input = form.querySelector('input')!
+  form.onsubmit = event => {
+    event.preventDefault()
+    onSubmit(input.value)
+    input.value = ''
+  }
+}
