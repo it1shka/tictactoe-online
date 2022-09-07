@@ -13,6 +13,13 @@
   flex-direction: column;
   background-color: #f0f0f0;
 
+  overflow: auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   .message {
     max-width: 300px;
     padding: 0.2em 0.5em;
@@ -36,6 +43,10 @@
     align-self: center;
     max-width: 500px;
     background-color: #ccc;
+  }
+
+  li:last-child {
+    margin-bottom: 20px;
   }
 }
 

@@ -29,6 +29,16 @@ class Chat {
     this.toggleButton.innerText = this.opened
       ? 'Hide chat'
       : 'Show chat'
+    if(this.opened) this.scrollToBottom()
+  }
+
+  private scrollToBottom() {
+    const last = this.chat.lastElementChild
+    if(last) {
+      last.scrollIntoView({
+        behavior: 'smooth'
+      })
+    }
   }
 
   pushMessage(message: ChatMessage) {
@@ -51,6 +61,7 @@ class Chat {
       msg.classList.add('self')
     }
     this.chat.appendChild(msg)
+    this.scrollToBottom()
   }
 }
 
