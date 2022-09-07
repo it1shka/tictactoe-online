@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Questrial&display=swap");
+.main-container {
+  background-color: white;
+  max-width: 1160px;
+  max-height: 800px;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: #cca000 0px 0px 4px;
+}
+.main-container .tictactoe-container {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  position: relative;
+}
+.main-container .chat-container {
+  width: 360px;
+  box-shadow: #ffd333 0px 0px 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#tictactoe {
+  display: grid;
+  gap: 5px;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+}
+#tictactoe div {
+  width: 120px;
+  height: 120px;
+  background-color: #e9e9e9;
+  transition: 0.1s background-color;
+}
+#tictactoe div:hover {
+  background-color: #d0d0d0;
+}
+
+.chat-title {
+  background-color: #ffd333;
+  padding: 0.5em 1em;
+}
+
+#chat {
+  flex: 1;
+  background-color: #f0f0f0;
+}
+
+#send-message-form {
+  display: flex;
+  box-shadow: #ffd333 0px 0px 4px;
+}
+#send-message-form input {
+  flex: 1;
+  padding: 0.5em;
+  font-size: inherit;
+  border: none;
+  outline: none;
+}
+#send-message-form button {
+  background-color: #ffd333;
+  transition: 0.1s background-color;
+  border: none;
+  width: 50px;
+}
+#send-message-form button:hover {
+  background-color: #ffc800;
+}
+
+::before, ::after, * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Questrial", sans-serif;
+  background: url("/background.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+/*# sourceMappingURL=styles.css.map */

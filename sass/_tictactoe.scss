@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+#tictactoe {
+  display: grid;
+  gap: 5px;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+
+  div {
+    width: $cell-size;
+    height: $cell-size;
+    @include colored(#e9e9e9);
+  }
+}

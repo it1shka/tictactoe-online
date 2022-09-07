@@ -1,0 +1,13 @@
+$primary-color: #ffd333;
+$chat-width: 360px;
+$tictactoe-container-size: 800px;
+$cell-size: 120px;
+$light-shadow: $primary-color 0px 0px 4px;
+
+@mixin colored($color) {
+  background-color: $color;
+  transition: 0.1s background-color;
+  &:hover {
+    background-color: darken($color, 10%);
+  }
+}

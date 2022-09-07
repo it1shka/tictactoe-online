@@ -1,0 +1,25 @@
+@use 'containers';
+@use 'tictactoe';
+@use 'chat';
+
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
+
+::before, ::after, * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Questrial', sans-serif;
+  background: url('/background.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}

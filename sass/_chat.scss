@@ -1,0 +1,30 @@
+@use 'variables' as *;
+
+.chat-title {
+  background-color: $primary-color;
+  padding: 0.5em 1em;
+}
+
+#chat {
+  flex: 1;
+  background-color: #f0f0f0;
+}
+
+#send-message-form {
+  display: flex;
+  box-shadow: $light-shadow;
+
+  input {
+    flex: 1;
+    padding: 0.5em;
+    font-size: inherit;
+    border: none;
+    outline: none;
+  }
+
+  button {
+    @include colored($primary-color);
+    border: none;
+    width: 50px;
+  }
+}
