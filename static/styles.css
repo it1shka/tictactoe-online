@@ -22,6 +22,10 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: 0.2s width ease-in;
+}
+.main-container .chat-container.closed {
+  width: 0px;
 }
 
 #tictactoe {
@@ -40,14 +44,55 @@
   background-color: #d0d0d0;
 }
 
+#next-player {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: inherit;
+  background-color: #ffd333;
+  transition: 0.1s background-color;
+  border: none;
+  padding: 0.5em;
+  border-radius: 0px 16px 0px 0px;
+}
+#next-player:hover {
+  background-color: #ffc800;
+}
+
 .chat-title {
   background-color: #ffd333;
   padding: 0.5em 1em;
+  height: 45px;
 }
 
 #chat {
   flex: 1;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
   background-color: #f0f0f0;
+}
+#chat .message {
+  max-width: 300px;
+  padding: 0.2em 0.5em;
+  background-color: #e6b400;
+  color: white;
+  margin: 0.2em 0.5em;
+  align-self: flex-start;
+  border-radius: 8px 8px 8px 0px;
+}
+#chat .message.self {
+  align-self: flex-end;
+  border-radius: 8px 8px 0px 8px;
+  background-color: #ffd333;
+  color: inherit;
+}
+#chat .gamestart, #chat .gameend, #chat .searching {
+  padding: 0.2em 0.5em;
+  margin: 0.2em 0.5em;
+  align-self: center;
+  max-width: 500px;
+  background-color: #ccc;
 }
 
 #send-message-form {
@@ -69,6 +114,23 @@
 }
 #send-message-form button:hover {
   background-color: #ffc800;
+}
+
+#toggle-chat {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 45px;
+  font-size: inherit;
+  color: white;
+  background-color: #e6b400;
+  transition: 0.1s background-color;
+  border: none;
+  padding: 0.5em;
+  border-radius: 0px 0px 0px 16px;
+}
+#toggle-chat:hover {
+  background-color: #b38c00;
 }
 
 ::before, ::after, * {

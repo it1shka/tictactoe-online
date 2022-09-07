@@ -9,6 +9,8 @@
 </head>
 <body>
   <div class="main-container">
+    <script type="module" defer src="/main.js"></script>
+
     <main class="tictactoe-container">
 
       <div id="tictactoe">
@@ -23,9 +25,17 @@
         <div></div>
       </div>
 
+      <button id="toggle-chat">
+        Hide chat
+      </button>
+
+      <button id="next-player">
+        Find game!
+      </button>
+
     </main>
 
-    <aside class="chat-container">
+    <aside class="chat-container closed">
       <h1 class="chat-title">Chat: </h1>
       <ul id="chat"></ul>
       <form id="send-message-form">

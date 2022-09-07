@@ -3,11 +3,40 @@
 .chat-title {
   background-color: $primary-color;
   padding: 0.5em 1em;
+  height: $chat-title-height;
 }
 
 #chat {
   flex: 1;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
   background-color: #f0f0f0;
+
+  .message {
+    max-width: 300px;
+    padding: 0.2em 0.5em;
+    background-color: darken($primary-color, $amount: 15%);
+    color: white;
+    margin: 0.2em 0.5em;
+    align-self: flex-start;
+    border-radius: 8px 8px 8px 0px;
+
+    &.self {
+      align-self: flex-end;
+      border-radius: 8px 8px 0px 8px;
+      background-color: $primary-color;
+      color: inherit;
+    }
+  }
+
+  .gamestart, .gameend, .searching {
+    padding: 0.2em 0.5em;
+    margin: 0.2em 0.5em;
+    align-self: center;
+    max-width: 500px;
+    background-color: #ccc;
+  }
 }
 
 #send-message-form {
@@ -27,4 +56,17 @@
     border: none;
     width: 50px;
   }
+}
+
+#toggle-chat {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: $chat-title-height;
+  font-size: inherit;
+  color: white;
+  @include colored(darken($primary-color, 15%));
+  border: none;
+  padding: 0.5em;
+  border-radius: 0px 0px 0px 16px;
 }
