@@ -1,3 +1,4 @@
+@use 'variables' as *;
 @use 'containers';
 @use 'tictactoe';
 @use 'chat';
@@ -13,6 +14,7 @@
 
 body {
   font-family: 'Questrial', sans-serif;
+  
   background: url('/background.png') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;

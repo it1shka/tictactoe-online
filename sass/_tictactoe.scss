@@ -11,6 +11,16 @@
     height: $cell-size;
     @include colored(#e9e9e9);
   }
+
+  div.cross {
+    @include with-image('/cross.png');
+    @include colored($primary-color);
+  }
+
+  div.zero {
+    @include with-image('/zero.png');
+    @include colored(complement($primary-color));
+  }
 }
 
 #next-player {

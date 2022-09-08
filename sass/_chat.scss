@@ -23,7 +23,7 @@
   .message {
     max-width: 300px;
     padding: 0.2em 0.5em;
-    background-color: darken($primary-color, $amount: 15%);
+    background-color: complement($primary-color);
     color: white;
     margin: 0.2em 0.5em;
     align-self: flex-start;

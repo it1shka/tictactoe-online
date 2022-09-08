@@ -12,3 +12,10 @@ $chat-title-height: 45px;
     background-color: darken($color, 10%);
   }
 }
+
+@mixin with-image($image) {
+  background-image:    url($image);
+  background-size:     cover;
+  background-repeat:   no-repeat;
+  background-position: center center;
+}

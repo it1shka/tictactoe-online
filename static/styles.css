@@ -43,6 +43,28 @@
 #tictactoe div:hover {
   background-color: #d0d0d0;
 }
+#tictactoe div.cross {
+  background-image: url("/cross.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #ffd333;
+  transition: 0.1s background-color;
+}
+#tictactoe div.cross:hover {
+  background-color: #ffc800;
+}
+#tictactoe div.zero {
+  background-image: url("/zero.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #335fff;
+  transition: 0.1s background-color;
+}
+#tictactoe div.zero:hover {
+  background-color: #0037ff;
+}
 
 #next-player {
   position: absolute;
@@ -83,7 +105,7 @@
 #chat .message {
   max-width: 300px;
   padding: 0.2em 0.5em;
-  background-color: #e6b400;
+  background-color: #335fff;
   color: white;
   margin: 0.2em 0.5em;
   align-self: flex-start;
