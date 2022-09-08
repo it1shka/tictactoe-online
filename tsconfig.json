@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "sourceMap": true,
     "module": "ES6",
     "lib": ["ES2019", "DOM"],
     "target": "ES2019",

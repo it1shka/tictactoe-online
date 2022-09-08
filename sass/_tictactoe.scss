@@ -1,7 +1,19 @@
 @use 'variables' as *;
 
+#no-game {
+  background-color: $primary-color;
+  padding: 1em 2em;
+  margin: 1em;
+  &.closed {
+    display: none;
+  }
+}
+
 #tictactoe {
   display: grid;
+  &.closed {
+    display: none;
+  }
   gap: 5px;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);

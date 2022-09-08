@@ -25,3 +25,24 @@ body {
   place-items: center;
   height: 100vh;
 }
+
+.alert-window {
+  position: fixed;
+  max-width: 500px;
+  width: 100%;
+
+  background-color: complement($primary-color);
+  border: 4px solid black;
+  color: white;
+  padding: 0.5em;
+  font-size: 2em;
+  z-index: 1;
+  top: 0;
+
+  transform: translateY(-100%);
+  transition: 0.75s transform ease-in-out;
+
+  &.opened {
+    transform: translateY(15px);
+  }
+}

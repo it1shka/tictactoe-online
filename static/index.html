@@ -8,25 +8,30 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+  <script type="module" defer src="/main.js"></script>
+
   <div class="main-container">
-    <script type="module" defer src="/main.js"></script>
 
     <main class="tictactoe-container">
 
-      <div id="tictactoe">
+      <div id="no-game">
+        <h1>Game has not been started yet.</h1>
+      </div>
+
+      <div id="tictactoe" class="closed">
         <div></div>
-        <div class="cross"></div>
-        <div class="cross"></div>
         <div></div>
-        <div class="zero"></div>
         <div></div>
-        <div class="zero"></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
         <div></div>
         <div></div>
       </div>
 
       <button id="toggle-chat">
-        Hide chat
+        Show chat
       </button>
 
       <button id="next-player">

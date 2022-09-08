@@ -31,27 +31,25 @@ class Chat {
             });
         }
     }
-    pushMessage(message) {
-        const msg = document.createElement('li');
-        msg.classList.add(message.mtype);
-        const msgtext = (() => {
-            switch (message.mtype) {
-                case 'searching':
-                    return 'Searching for game...';
-                case 'gamestart':
-                    return 'Game has been started!';
-                case 'gameend':
-                    return 'Game ended.';
-                case 'message':
-                    return message.message;
-            }
-        })();
-        msg.innerText = msgtext;
-        if (message.mtype === 'message' && message.self) {
-            msg.classList.add('self');
+    pushMessage(message, self) {
+        const messageElement = document.createElement('li');
+        messageElement.classList.add('message');
+        messageElement.innerText = message;
+        if (self) {
+            messageElement.classList.add('self');
         }
-        this.chat.appendChild(msg);
+        this.chat.appendChild(messageElement);
         this.scrollToBottom();
+    }
+    pushModalMessage(modal) {
+        const modalElement = document.createElement('li');
+        modalElement.classList.add('modal-message');
+        modalElement.innerText = modal;
+        this.chat.appendChild(modalElement);
+        this.scrollToBottom();
+    }
+    get isOpened() {
+        return this.opened;
     }
 }
 export default new Chat(false);
@@ -61,8 +59,10 @@ export function onFormMessageSubmit(onSubmit) {
     const input = form.querySelector('input');
     form.onsubmit = event => {
         event.preventDefault();
-        onSubmit(input.value);
+        const value = input.value.trim();
+        if (!value)
+            return;
+        onSubmit(value);
         input.value = '';
     };
 }
-//# sourceMappingURL=Chat.js.map
