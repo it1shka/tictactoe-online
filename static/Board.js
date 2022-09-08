@@ -24,3 +24,13 @@ class Board {
     }
 }
 export default new Board();
+export function onBoardClick(handler) {
+    const root = document.querySelector('#tictactoe');
+    const board = Array.from(root.children);
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+            const current = board[row * 3 + col];
+            current.onclick = () => handler(row, col);
+        }
+    }
+}
