@@ -23,7 +23,3 @@ func WebsocketEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	handleNewConnection(conn)
 }
-
-func handleNewConnection(conn *websocket.Conn) {
-
-}

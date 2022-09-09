@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	server.StartMatchmaking()
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 	http.HandleFunc("/ws", server.WebsocketEndpoint)
