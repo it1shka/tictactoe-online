@@ -10,7 +10,7 @@
   overflow: hidden;
   box-shadow: #cca000 0px 0px 4px;
 }
-.main-container .tictactoe-container {
+.main-container .game-container {
   flex: 1;
   display: grid;
   place-content: center;
@@ -28,13 +28,55 @@
   width: 0px;
 }
 
-#no-game {
-  background-color: #ffd333;
-  padding: 1em 2em;
-  margin: 1em;
+.no-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-#no-game.closed {
+.no-game > * + * {
+  margin-top: 0.5em;
+}
+.no-game.closed {
   display: none;
+}
+.no-game h1 {
+  margin: 0.5em;
+}
+.no-game #start-game {
+  font-size: 1.5em;
+  background-color: #ffd333;
+  transition: 0.1s background-color;
+  border: 3px solid black;
+  padding: 0.5em;
+  border-radius: 16px 0px 16px 16px;
+}
+.no-game #start-game:hover {
+  background-color: #ffc800;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game > * + * {
+  margin-top: 0.5em;
+}
+.game.closed {
+  display: none;
+}
+.game .turn {
+  margin-top: 1em;
+}
+.game .turn span {
+  padding: 0.2em 0.5em;
+}
+.game .turn .turn-cross {
+  background-color: #ffd333;
+}
+.game .turn .turn-zero {
+  background-color: #335fff;
+  color: white;
 }
 
 #tictactoe {
@@ -42,9 +84,6 @@
   gap: 5px;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);
-}
-#tictactoe.closed {
-  display: none;
 }
 #tictactoe div {
   width: 120px;
@@ -78,7 +117,7 @@
   background-color: #0037ff;
 }
 
-#next-player {
+#finish-game {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -89,8 +128,11 @@
   padding: 0.5em;
   border-radius: 0px 16px 0px 0px;
 }
-#next-player:hover {
+#finish-game:hover {
   background-color: #ffc800;
+}
+#finish-game.closed {
+  display: none;
 }
 
 .chat-title {

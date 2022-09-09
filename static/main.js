@@ -16,7 +16,16 @@ onFormMessageSubmit(message => {
 //   Board.finishGame()
 // }
 // main()
-Board.startGame();
+// Board.startGame()
 onBoardClick((row, col) => {
-    Board.setFigure('cross', row, col);
+    Board.setFigure(row, col);
 });
+document.querySelector('#start-game')
+    .onclick = () => {
+    Board.startGame(true);
+    setInterval(() => Board.timerTick(), 1000);
+};
+document.querySelector('#finish-game')
+    .onclick = () => {
+    Board.finishGame();
+};

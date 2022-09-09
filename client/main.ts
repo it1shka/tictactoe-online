@@ -22,8 +22,19 @@ onFormMessageSubmit(message => {
 
 // main()
 
-Board.startGame()
+// Board.startGame()
 
 onBoardClick((row, col) => {
-  Board.setFigure('cross', row, col)
+  Board.setFigure(row, col)
 })
+
+document.querySelector<HTMLButtonElement>('#start-game')!
+  .onclick = () => {
+    Board.startGame(true)
+    setInterval(() => Board.timerTick(), 1000)
+  }
+
+document.querySelector<HTMLButtonElement>('#finish-game')!
+  .onclick = () => {
+    Board.finishGame()
+  }

@@ -1,19 +1,61 @@
 @use 'variables' as *;
 
-#no-game {
-  background-color: $primary-color;
-  padding: 1em 2em;
-  margin: 1em;
+.no-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > * + * {
+    margin-top: 0.5em;
+  }
   &.closed {
     display: none;
+  }
+
+  h1 {
+    margin: 0.5em;
+  }
+
+  #start-game {
+    font-size: 1.5em;
+    @include colored($primary-color);
+    border: 3px solid black;
+    padding: 0.5em;
+    border-radius: 16px 0px 16px 16px;
+  }
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > * + * {
+    margin-top: 0.5em;
+  }
+
+  &.closed {
+    display: none;
+  }
+
+  .turn {
+    margin-top: 1em;
+    
+    span {
+      padding: 0.2em 0.5em;
+    }
+
+    .turn-cross {
+      background-color: $primary-color;
+    }
+
+    .turn-zero {
+      background-color: complement($primary-color);
+      color: white;
+    }
   }
 }
 
 #tictactoe {
   display: grid;
-  &.closed {
-    display: none;
-  }
   gap: 5px;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);
@@ -35,7 +77,7 @@
   }
 }
 
-#next-player {
+#finish-game {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -44,4 +86,7 @@
   border: none;
   padding: 0.5em;
   border-radius: 0px 16px 0px 0px;
+  &.closed {
+    display: none;
+  }
 }

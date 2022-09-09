@@ -12,32 +12,37 @@
 
   <div class="main-container">
 
-    <main class="tictactoe-container">
-
-      <div id="no-game">
+    <main class="game-container">
+      <div class="no-game">
         <h1>Game has not been started yet.</h1>
+        <button id="start-game">
+          Find game!
+        </button>
       </div>
 
-      <div id="tictactoe" class="closed">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+      <div class="game closed">
+        <h1 class="timer">No time specified</h1>
+        <div id="tictactoe">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <h1 class="turn">No turn specified</h1>
       </div>
+
+      <button id="finish-game" class="closed">
+        Exit game
+      </button>
 
       <button id="toggle-chat">
         Show chat
       </button>
-
-      <button id="next-player">
-        Find game!
-      </button>
-
     </main>
 
     <aside class="chat-container closed">

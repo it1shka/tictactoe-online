@@ -1,26 +1,62 @@
+import { formatSeconds } from "./misc.js";
 class Board {
     constructor() {
-        this.root = document.querySelector('#tictactoe');
-        this.noGame = document.querySelector('#no-game');
-        this.board = Array.from(this.root.children);
+        this.nogameElement = document.querySelector('.no-game');
+        this.gameElement = document.querySelector('.game');
+        this.finishGameElement = document.querySelector('#finish-game');
+        this.timerElement = this.gameElement.querySelector('.timer');
+        this.turnElement = this.gameElement.querySelector('.turn');
+        const root = document.querySelector('#tictactoe');
+        this.board = Array.from(root.children);
     }
-    clear() {
+    get turn() {
+        return this._turn;
+    }
+    set turn(value) {
+        this._turn = value;
+        const prefix = this.isPlayingCross == value
+            ? 'Your turn: '
+            : 'Opponent turn: ';
+        const postfix = value
+            ? '<span class="turn-cross">Cross</span>'
+            : '<span class="turn-zero">Zero</span>';
+        this.turnElement.innerHTML = prefix + postfix;
+    }
+    get timeLeft() {
+        return this._timeLeft;
+    }
+    set timeLeft(value) {
+        if (value < 0)
+            return;
+        this._timeLeft = value;
+        this.timerElement.innerText = formatSeconds(value);
+    }
+    startGame(isPlayingCross) {
         for (const each of this.board) {
             each.classList.remove('cross', 'zero');
         }
+        this.isPlayingCross = isPlayingCross;
+        this.turn = true;
+        this.timeLeft = 60;
+        this.nogameElement.classList.add('closed');
+        this.gameElement.classList.remove('closed');
+        this.finishGameElement.classList.remove('closed');
     }
-    startGame() {
-        this.noGame.classList.add('closed');
-        this.root.classList.remove('closed');
-        this.clear();
-    }
-    setFigure(figure, row, column) {
+    setFigure(row, column) {
         const cell = this.board[row * 3 + column];
-        cell.classList.add(figure);
+        if (cell.classList.contains('cross') || cell.classList.contains('zero')) {
+            return;
+        }
+        cell.classList.add(this.turn ? 'cross' : 'zero');
+        this.turn = !this.turn;
+    }
+    timerTick() {
+        this.timeLeft--;
     }
     finishGame() {
-        this.root.classList.add('closed');
-        this.noGame.classList.remove('closed');
+        this.gameElement.classList.add('closed');
+        this.finishGameElement.classList.add('closed');
+        this.nogameElement.classList.remove('closed');
     }
 }
 export default new Board();

@@ -10,7 +10,7 @@
   overflow: hidden;
   box-shadow: darken($primary-color, 20%) 0px 0px 4px;
 
-  .tictactoe-container {
+  .game-container {
     flex: 1;
     display: grid;
     place-content: center;

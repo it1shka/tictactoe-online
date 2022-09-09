@@ -17,3 +17,8 @@ export async function showAlert(message) {
     await delay(2 * Second);
     alertElement.remove();
 }
+export function formatSeconds(seconds) {
+    const min = ~~(seconds / 60);
+    const sec = seconds % 60;
+    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+}
