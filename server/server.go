@@ -3,9 +3,29 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
+	"it1shka.com/tictactoe-online/server/utils"
 )
+
+// MATCHMAKING:
+
+var matchmakingQueue = utils.NewQueue[*Player]()
+
+func makeGame(a, b *Player) {
+
+}
+
+func StartMatchmaking() {
+	utils.SetInfiniteLoop(time.Second*3, func() {
+		matchmakingQueue.MakePairs(100, makeGame)
+	})
+}
+
+// NEW PLAYER CONNECTION:
+
+var players = utils.NewDict[*Player, bool]()
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -21,5 +41,8 @@ func WebsocketEndpoint(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Unable to connect to websocket")
 		return
 	}
-	handleNewConnection(conn)
+
+	player := NewPlayer(conn)
+	players.Set(player, true)
+	player.ListenMessages()
 }

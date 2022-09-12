@@ -1,16 +1,9 @@
-package server
+package utils
 
 import (
 	"math/rand"
 	"time"
 )
-
-var src = rand.NewSource(time.Now().UnixNano())
-var rnd = rand.New(src)
-
-func RandBool() bool {
-	return rnd.Intn(2) != 0
-}
 
 func min(a, b int) int {
 	if a < b {
@@ -26,7 +19,7 @@ func boolToInt(value bool) int {
 	return 0
 }
 
-func chunksOf[T any](array []T, chunkSize int) [][]T {
+func ChunksOf[T any](array []T, chunkSize int) [][]T {
 	rlen := len(array)
 	chunksLength := rlen/chunkSize + boolToInt(rlen%chunkSize > 0)
 	chunks := make([][]T, chunksLength)
@@ -40,7 +33,7 @@ func chunksOf[T any](array []T, chunkSize int) [][]T {
 	return chunks
 }
 
-func keysOf[K comparable, V any](dict map[K]V) []K {
+func KeysOf[K comparable, V any](dict map[K]V) []K {
 	keys := make([]K, len(dict))
 	index := 0
 	for key := range dict {
@@ -50,7 +43,7 @@ func keysOf[K comparable, V any](dict map[K]V) []K {
 	return keys
 }
 
-func setInfiniteLoop(duration time.Duration, function func()) {
+func SetInfiniteLoop(duration time.Duration, function func()) {
 	ticker := time.NewTicker(duration)
 	go func() {
 		for range ticker.C {
@@ -59,4 +52,12 @@ func setInfiniteLoop(duration time.Duration, function func()) {
 	}()
 }
 
-type JSON map[string]any
+var src = rand.NewSource(time.Now().UnixNano())
+var rnd = rand.New(src)
+
+func RandomArrange[T any](a, b T) (T, T) {
+	if rnd.Intn(2) != 0 {
+		return a, b
+	}
+	return b, a
+}

@@ -3,7 +3,7 @@ package server
 import (
 	"sync"
 
-	"github.com/gorilla/websocket"
+	"it1shka.com/tictactoe-online/server/utils"
 )
 
 type Figure uint
@@ -31,22 +31,14 @@ const (
 
 type Game struct {
 	mx                      sync.Mutex
-	crossPlayer, zeroPlayer *websocket.Conn
+	crossPlayer, zeroPlayer *Player
 	turn                    Turn
 	status                  GameStatus
 	board                   [3][3]Figure
 }
 
-func NewGame(player1, player2 *websocket.Conn) *Game {
-	flip := RandBool()
-	var a, b *websocket.Conn
-
-	if flip {
-		a, b = player1, player2
-	} else {
-		a, b = player2, player1
-	}
-
+func NewGame(player1, player2 *Player) *Game {
+	a, b := utils.RandomArrange(player1, player2)
 	return &Game{
 		crossPlayer: a,
 		zeroPlayer:  b,
@@ -55,6 +47,10 @@ func NewGame(player1, player2 *websocket.Conn) *Game {
 	}
 }
 
-func (game *Game) SetFigure(conn *websocket.Conn, row, col int) {
+func (game *Game) SetFigure(author *Player, row, col int) {
+
+}
+
+func (game *Game) FinishGame(author *Player) {
 
 }
