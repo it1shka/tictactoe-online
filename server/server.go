@@ -14,7 +14,17 @@ import (
 var matchmakingQueue = utils.NewQueue[*Player]()
 
 func makeGame(a, b *Player) {
+	a.Lock()
+	b.Lock()
+	defer func() {
+		a.Unlock()
+		b.Unlock()
+	}()
 
+	game := NewGame(a, b)
+	a.game, b.game = game, game
+	a.opponent, b.opponent = b, a
+	game.StartGame()
 }
 
 func StartMatchmaking() {

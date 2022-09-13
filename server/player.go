@@ -2,11 +2,13 @@ package server
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/gorilla/websocket"
 )
 
 type Player struct {
+	sync.RWMutex
 	conn     *websocket.Conn
 	game     *Game
 	opponent *Player
@@ -32,12 +34,12 @@ func (player *Player) ListenMessages() {
 
 		switch message["messageType"] {
 
-		case "text":
+		case MessageText:
 			if content, ok := message["content"].(string); ok {
 				player.MessageOpponent(content)
 			}
 
-		case "figure":
+		case MessageSetFigure:
 			row, ok := message["row"].(int)
 			if !ok {
 				break
@@ -48,13 +50,13 @@ func (player *Player) ListenMessages() {
 			}
 			player.SetFigure(row, col)
 
-		case "start":
+		case MessageStartGame:
 			player.FindNewGame()
 
-		case "cancel":
+		case MessageCancelSearching:
 			player.CancelNewGame()
 
-		case "finish":
+		case MessageFinishGame:
 			player.FinishGame()
 
 		}
@@ -69,17 +71,20 @@ func (player *Player) CleanupOnExit() {
 }
 
 func (player *Player) MessageOpponent(message string) {
+	player.RLock()
+	defer player.RUnlock()
+
 	if player.opponent == nil {
 		return
 	}
 	oppconn := player.opponent.conn
-	oppconn.WriteJSON(map[string]any{
-		"messageType": "text",
-		"content":     message,
-	})
+	WriteTextMessageTo(oppconn, message)
 }
 
 func (player *Player) SetFigure(row, col int) {
+	player.RLock()
+	defer player.RUnlock()
+
 	if player.game == nil {
 		return
 	}
@@ -95,6 +100,9 @@ func (player *Player) CancelNewGame() {
 }
 
 func (player *Player) FinishGame() {
+	player.RLock()
+	defer player.RUnlock()
+
 	if player.game == nil {
 		return
 	}

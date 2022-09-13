@@ -1,8 +1,6 @@
 package server
 
 import (
-	"sync"
-
 	"it1shka.com/tictactoe-online/server/utils"
 )
 
@@ -30,7 +28,6 @@ const (
 )
 
 type Game struct {
-	mx                      sync.Mutex
 	crossPlayer, zeroPlayer *Player
 	turn                    Turn
 	status                  GameStatus
@@ -45,6 +42,9 @@ func NewGame(player1, player2 *Player) *Game {
 		turn:        TurnCrosses,
 		status:      StatusActive,
 	}
+}
+
+func (game *Game) StartGame() {
 }
 
 func (game *Game) SetFigure(author *Player, row, col int) {
