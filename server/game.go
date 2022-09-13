@@ -19,7 +19,9 @@ type Game struct {
 	crossesPlayer, zeroesPlayer *Player
 	turn                        *Player
 	board                       [3][3]Figure
-	finished                    bool
+	// finished when somebody wins,
+	// closed when somebody exits
+	finished, closed bool
 }
 
 func NewGame(player1, player2 *Player) *Game {
@@ -52,6 +54,7 @@ func (game *Game) checkBoard() {
 
 // PUBLIC INTERFACE
 
+// called right after NewGame() constructor
 func (game *Game) StartGame() {
 	SendGameStartedMessageTo(game.crossesPlayer, true)
 	SendGameStartedMessageTo(game.zeroesPlayer, false)
@@ -62,7 +65,7 @@ func (game *Game) SetFigure(author *Player, row, col int) {
 	game.Lock()
 	defer game.Unlock()
 
-	if game.finished {
+	if game.closed || game.finished {
 		return
 	}
 
@@ -85,9 +88,21 @@ func (game *Game) SetFigure(author *Player, row, col int) {
 
 }
 
-func (game *Game) FinishGame(author *Player) {
+func (game *Game) TextMessage(author *Player, message string) {
 	game.Lock()
 	defer game.Unlock()
+
+	opp := game.opponent(author)
+	SendTextMessageTo(opp, message)
+}
+
+func (game *Game) CloseGame(author *Player) {
+	game.Lock()
+	defer game.Unlock()
+
+	if game.closed {
+		return
+	}
 
 	if !game.finished {
 		game.finished = true
@@ -95,6 +110,7 @@ func (game *Game) FinishGame(author *Player) {
 		SendLooserMessageTo(author)
 	}
 
-	SendOpponentFinishedGameTo(game.opponent(author))
+	SendOpponentClosedGameTo(game.opponent(author))
 	game.crossesPlayer, game.zeroesPlayer, game.turn = nil, nil, nil
+	game.closed = true
 }

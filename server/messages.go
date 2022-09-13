@@ -9,12 +9,12 @@ const (
 	// Incoming messages
 	MessageStartGame       = MessageType("start")
 	MessageCancelSearching = MessageType("cancel")
-	MessageFinishGame      = MessageType("finish")
+	MessageCloseGame       = MessageType("close")
 	// Outcoming messages
 	MessageGameStarted  = MessageType("started")
 	MessageYouAreWinner = MessageType("winner")
 	MessageYouAreLooser = MessageType("looser")
-	MessageGameFinished = MessageType("finished")
+	MessageGameClosed   = MessageType("closed")
 )
 
 func SendTextMessageTo(player *Player, message string) {
@@ -51,8 +51,8 @@ func SendLooserMessageTo(player *Player) {
 	})
 }
 
-func SendOpponentFinishedGameTo(player *Player) {
+func SendOpponentClosedGameTo(player *Player) {
 	player.SendToClient(map[string]any{
-		"messageType": MessageGameFinished,
+		"messageType": MessageGameClosed,
 	})
 }

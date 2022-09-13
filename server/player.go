@@ -9,10 +9,9 @@ import (
 
 type Player struct {
 	sync.RWMutex
-	conn     *websocket.Conn
-	game     *Game
-	opponent *Player
-	closed   bool
+	conn   *websocket.Conn
+	game   *Game
+	closed bool
 }
 
 func NewPlayer(conn *websocket.Conn) *Player {
@@ -61,8 +60,8 @@ func (player *Player) ListenMessages() {
 		case MessageCancelSearching:
 			player.CancelNewGame()
 
-		case MessageFinishGame:
-			player.FinishGame()
+		case MessageCloseGame:
+			player.CloseGame()
 
 		default:
 			fmt.Printf("Unexpected 'messageType' field: %v\n", message["messageType"])
@@ -82,7 +81,7 @@ func (player *Player) CleanupOnExit() {
 	player.Lock()
 	defer player.Unlock()
 
-	player.FinishGame()
+	player.CloseGame()
 	matchmakingQueue.Delete(player)
 	players.Delete(player)
 	player.conn.Close()
@@ -95,10 +94,10 @@ func (player *Player) MessageOpponent(message string) {
 	player.RLock()
 	defer player.RUnlock()
 
-	if player.opponent == nil {
+	if player.game == nil {
 		return
 	}
-	SendTextMessageTo(player.opponent, message)
+	player.game.TextMessage(player, message)
 }
 
 func (player *Player) SetFigure(row, col int) {
@@ -119,13 +118,13 @@ func (player *Player) CancelNewGame() {
 	matchmakingQueue.Delete(player)
 }
 
-func (player *Player) FinishGame() {
+func (player *Player) CloseGame() {
 	player.RLock()
 	defer player.RUnlock()
 
 	if player.game == nil {
 		return
 	}
-	player.game.FinishGame(player)
-	player.game, player.opponent = nil, nil
+	player.game.CloseGame(player)
+	player.game = nil
 }

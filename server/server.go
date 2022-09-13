@@ -23,7 +23,6 @@ func makeGame(a, b *Player) {
 
 	game := NewGame(a, b)
 	a.game, b.game = game, game
-	a.opponent, b.opponent = b, a
 	game.StartGame()
 }
 
