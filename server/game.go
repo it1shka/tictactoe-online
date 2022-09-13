@@ -14,20 +14,12 @@ const (
 	FigureZero
 )
 
-type GameStatus uint
-
-const (
-	StatusActive GameStatus = iota
-	StatusCrossesWin
-	StatusZeroesWin
-)
-
 type Game struct {
 	sync.Mutex
 	crossesPlayer, zeroesPlayer *Player
 	turn                        *Player
-	status                      GameStatus
 	board                       [3][3]Figure
+	finished                    bool
 }
 
 func NewGame(player1, player2 *Player) *Game {
@@ -35,9 +27,10 @@ func NewGame(player1, player2 *Player) *Game {
 	return &Game{
 		crossesPlayer: a,
 		zeroesPlayer:  b,
-		status:        StatusActive,
 	}
 }
+
+// PRIVATE FUNCTIONS
 
 func (game *Game) opponent(player *Player) *Player {
 	if game.crossesPlayer == player {
@@ -46,9 +39,22 @@ func (game *Game) opponent(player *Player) *Player {
 	return game.crossesPlayer
 }
 
+func (game *Game) figureOf(player *Player) Figure {
+	if game.crossesPlayer == player {
+		return FigureCross
+	}
+	return FigureCross
+}
+
+func (game *Game) checkBoard() {
+
+}
+
+// PUBLIC INTERFACE
+
 func (game *Game) StartGame() {
-	SendGameStartedMessageTo(game.crossesPlayer.conn, true)
-	SendGameStartedMessageTo(game.zeroesPlayer.conn, false)
+	SendGameStartedMessageTo(game.crossesPlayer, true)
+	SendGameStartedMessageTo(game.zeroesPlayer, false)
 	game.turn = game.crossesPlayer
 }
 
@@ -56,10 +62,39 @@ func (game *Game) SetFigure(author *Player, row, col int) {
 	game.Lock()
 	defer game.Unlock()
 
+	if game.finished {
+		return
+	}
+
+	if author != game.turn {
+		return
+	}
+
+	if row < 0 || row > 2 || col < 0 || col > 2 {
+		return
+	}
+
+	if game.board[row][col] != FigureNothing {
+		return
+	}
+
+	game.board[row][col] = game.figureOf(author)
+	SendFigureSetMessageTo(game.opponent(author), row, col)
+	game.checkBoard()
+	game.turn = game.opponent(author)
+
 }
 
 func (game *Game) FinishGame(author *Player) {
 	game.Lock()
 	defer game.Unlock()
 
+	if !game.finished {
+		game.finished = true
+		SendWinnerMessageTo(game.opponent(author))
+		SendLooserMessageTo(author)
+	}
+
+	SendOpponentFinishedGameTo(game.opponent(author))
+	game.crossesPlayer, game.zeroesPlayer, game.turn = nil, nil, nil
 }

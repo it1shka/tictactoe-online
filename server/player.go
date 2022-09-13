@@ -12,6 +12,7 @@ type Player struct {
 	conn     *websocket.Conn
 	game     *Game
 	opponent *Player
+	closed   bool
 }
 
 func NewPlayer(conn *websocket.Conn) *Player {
@@ -37,15 +38,19 @@ func (player *Player) ListenMessages() {
 		case MessageText:
 			if content, ok := message["content"].(string); ok {
 				player.MessageOpponent(content)
+			} else {
+				fmt.Printf("'content' field is not a string: %v\n", content)
 			}
 
 		case MessageSetFigure:
 			row, ok := message["row"].(int)
 			if !ok {
+				fmt.Printf("'row' field is not an int: %v\n", row)
 				break
 			}
 			col, ok := message["column"].(int)
 			if !ok {
+				fmt.Printf("'column' field is not an int: %v\n", col)
 				break
 			}
 			player.SetFigure(row, col)
@@ -59,16 +64,32 @@ func (player *Player) ListenMessages() {
 		case MessageFinishGame:
 			player.FinishGame()
 
+		default:
+			fmt.Printf("Unexpected 'messageType' field: %v\n", message["messageType"])
+
 		}
 	}
 }
 
+func (player *Player) SendToClient(message map[string]any) {
+	if player.closed {
+		return
+	}
+	player.conn.WriteJSON(message)
+}
+
 func (player *Player) CleanupOnExit() {
+	player.Lock()
+	defer player.Unlock()
+
 	player.FinishGame()
 	matchmakingQueue.Delete(player)
 	players.Delete(player)
 	player.conn.Close()
+	player.closed = true
 }
+
+// HANDLERS FOR INCOMING USER MESSAGES
 
 func (player *Player) MessageOpponent(message string) {
 	player.RLock()
@@ -77,8 +98,7 @@ func (player *Player) MessageOpponent(message string) {
 	if player.opponent == nil {
 		return
 	}
-	oppconn := player.opponent.conn
-	WriteTextMessageTo(oppconn, message)
+	SendTextMessageTo(player.opponent, message)
 }
 
 func (player *Player) SetFigure(row, col int) {
@@ -107,4 +127,5 @@ func (player *Player) FinishGame() {
 		return
 	}
 	player.game.FinishGame(player)
+	player.game, player.opponent = nil, nil
 }
