@@ -7,6 +7,11 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// Player is a mediator between *websocket.Conn
+// and *Game. It listens for *websocket.Conn
+// messages, and delegates them to *Game instance.
+// Also Player performs cleanup with Player.cleanupOnClose()
+// when connection is being closed
 type Player struct {
 	sync.RWMutex
 	conn   *websocket.Conn
@@ -20,8 +25,10 @@ func NewPlayer(conn *websocket.Conn) *Player {
 	}
 }
 
+// PUBLIC INTERFACE
+
 func (player *Player) ListenMessages() {
-	defer player.CleanupOnExit()
+	defer player.cleanupOnClose()
 
 	for {
 		var message map[string]any
@@ -71,21 +78,26 @@ func (player *Player) ListenMessages() {
 }
 
 func (player *Player) SendToClient(message map[string]any) {
+	player.RLock()
+	defer player.RUnlock()
+
 	if player.closed {
 		return
 	}
 	player.conn.WriteJSON(message)
 }
 
-func (player *Player) CleanupOnExit() {
-	player.Lock()
-	defer player.Unlock()
+// PRIVATE FUNCTIONS
 
+func (player *Player) cleanupOnClose() {
 	player.CloseGame()
 	matchmakingQueue.Delete(player)
 	players.Delete(player)
+
+	player.Lock()
 	player.conn.Close()
 	player.closed = true
+	player.Unlock()
 }
 
 // HANDLERS FOR INCOMING USER MESSAGES

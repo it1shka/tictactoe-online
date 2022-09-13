@@ -14,6 +14,8 @@ const (
 	FigureZero
 )
 
+// GAME
+
 type Game struct {
 	sync.Mutex
 	crossesPlayer, zeroesPlayer *Player
@@ -91,6 +93,10 @@ func (game *Game) SetFigure(author *Player, row, col int) {
 func (game *Game) TextMessage(author *Player, message string) {
 	game.Lock()
 	defer game.Unlock()
+
+	if game.closed {
+		return
+	}
 
 	opp := game.opponent(author)
 	SendTextMessageTo(opp, message)

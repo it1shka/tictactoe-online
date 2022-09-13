@@ -14,15 +14,13 @@ import (
 var matchmakingQueue = utils.NewQueue[*Player]()
 
 func makeGame(a, b *Player) {
-	a.Lock()
-	b.Lock()
-	defer func() {
-		a.Unlock()
-		b.Unlock()
-	}()
-
 	game := NewGame(a, b)
-	a.game, b.game = game, game
+	players := []*Player{a, b}
+	for _, each := range players {
+		each.Lock()
+		each.game = game
+		each.Unlock()
+	}
 	game.StartGame()
 }
 
@@ -53,5 +51,5 @@ func WebsocketEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	player := NewPlayer(conn)
 	players.Set(player, true)
-	player.ListenMessages()
+	go player.ListenMessages()
 }
