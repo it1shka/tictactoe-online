@@ -40,13 +40,6 @@
 //   }
 
 import GameWindow from "./GameWindow.js"
-import { delay, Second } from "./misc.js"
+import './Chat.js'
 
-async function main() {
-  await delay(3 * Second)
-  GameWindow.layout = 'searching'
-  await delay(3 * Second)
-  GameWindow.layout = 'game'
-}
-
-main()
+GameWindow.layout = 'game'

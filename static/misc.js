@@ -5,7 +5,6 @@ export function delay(time) {
     });
 }
 export async function showAlert(message) {
-    console.log(`Creating with message ${message}`);
     const alertElement = document.createElement('aside');
     alertElement.classList.add('alert-window');
     alertElement.innerText = message !== null && message !== void 0 ? message : 'Warning!';

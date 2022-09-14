@@ -24,6 +24,10 @@
   overflow: hidden;
   transition: 0.2s width ease-in;
 }
+.main-container .chat-container.closed {
+  display: flex !important;
+  width: 0px;
+}
 
 .game-state-widget {
   display: flex;

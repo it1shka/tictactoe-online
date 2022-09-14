@@ -31,11 +31,5 @@
 //     Board.finishGame()
 //   }
 import GameWindow from "./GameWindow.js";
-import { delay, Second } from "./misc.js";
-async function main() {
-    await delay(3 * Second);
-    GameWindow.layout = 'searching';
-    await delay(3 * Second);
-    GameWindow.layout = 'game';
-}
-main();
+import './Chat.js';
+GameWindow.layout = 'game';
