@@ -24,25 +24,19 @@
   overflow: hidden;
   transition: 0.2s width ease-in;
 }
-.main-container .chat-container.closed {
-  width: 0px;
-}
 
-.no-game {
+.game-state-widget {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.no-game > * + * {
+.game-state-widget > * + * {
   margin-top: 0.5em;
 }
-.no-game.closed {
-  display: none;
-}
-.no-game h1 {
+.game-state-widget h1 {
   margin: 0.5em;
 }
-.no-game #start-game {
+.game-state-widget button {
   font-size: 1.5em;
   background-color: #ffd333;
   transition: 0.1s background-color;
@@ -50,7 +44,7 @@
   padding: 0.5em;
   border-radius: 16px 0px 16px 16px;
 }
-.no-game #start-game:hover {
+.game-state-widget button:hover {
   background-color: #ffc800;
 }
 
@@ -61,9 +55,6 @@
 }
 .game > * + * {
   margin-top: 0.5em;
-}
-.game.closed {
-  display: none;
 }
 .game .turn {
   margin-top: 1em;
@@ -130,9 +121,6 @@
 }
 #finish-game:hover {
   background-color: #ffc800;
-}
-#finish-game.closed {
-  display: none;
 }
 
 .chat-title {
@@ -224,6 +212,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+*.closed {
+  display: none !important;
 }
 
 body {

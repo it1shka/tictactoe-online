@@ -12,6 +12,11 @@
   box-sizing: border-box;
 }
 
+// I'm using it to close elements
+*.closed {
+  display: none !important;
+}
+
 body {
   font-family: 'Questrial', sans-serif;
   

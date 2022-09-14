@@ -26,9 +26,9 @@
     overflow: hidden;
 
     transition: 0.2s width ease-in;
-    &.closed {
-      width: 0px;
-    }
+    // &.closed {
+    //   width: 0px;
+    // }
   }
 }
 

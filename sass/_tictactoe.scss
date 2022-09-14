@@ -1,21 +1,21 @@
 @use 'variables' as *;
 
-.no-game {
+.game-state-widget {
   display: flex;
   flex-direction: column;
   align-items: center;
   & > * + * {
     margin-top: 0.5em;
   }
-  &.closed {
-    display: none;
-  }
+  // &.closed {
+  //   display: none;
+  // }
 
   h1 {
     margin: 0.5em;
   }
 
-  #start-game {
+  button {
     font-size: 1.5em;
     @include colored($primary-color);
     border: 3px solid black;
@@ -32,9 +32,9 @@
     margin-top: 0.5em;
   }
 
-  &.closed {
-    display: none;
-  }
+  // &.closed {
+  //   display: none;
+  // }
 
   .turn {
     margin-top: 1em;
@@ -86,7 +86,7 @@
   border: none;
   padding: 0.5em;
   border-radius: 0px 16px 0px 0px;
-  &.closed {
-    display: none;
-  }
+  // &.closed {
+  //   display: none;
+  // }
 }

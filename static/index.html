@@ -13,13 +13,24 @@
   <div class="main-container">
 
     <main class="game-container">
-      <div class="no-game">
+
+      <!-- When no game and no search -->
+      <div class="game-state-widget">
         <h1>Game has not been started yet.</h1>
         <button id="start-game">
           Find game!
         </button>
       </div>
 
+      <!-- When there is a search for game -->
+      <div class="game-state-widget closed">
+        <h1>Searching for your game...</h1>
+        <button id="cancel-game">
+          Cancel!
+        </button>
+      </div>
+
+      <!-- When there is a game running -->
       <div class="game closed">
         <h1 class="timer">No time specified</h1>
         <div id="tictactoe">
