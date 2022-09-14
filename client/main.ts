@@ -1,12 +1,12 @@
-import Board, { onBoardClick } from './Board.js'
-import Chat, { onFormMessageSubmit } from './Chat.js'
-import { delay, Second, showAlert } from './misc.js'
+// import Board, { onBoardClick } from './Board.js'
+// import Chat, { onFormMessageSubmit } from './Chat.js'
+// import { delay, Second, showAlert } from './misc.js'
 
-Chat.pushModalMessage('Click "Find game" to start a new game.')
+// Chat.pushModalMessage('Click "Find game" to start a new game.')
 
-onFormMessageSubmit(message => {
-  Chat.pushMessage(message, true)
-})
+// onFormMessageSubmit(message => {
+//   Chat.pushMessage(message, true)
+// })
 
 // async function main() {
 //   await delay(3 * Second)
@@ -24,17 +24,29 @@ onFormMessageSubmit(message => {
 
 // Board.startGame()
 
-onBoardClick((row, col) => {
-  Board.setFigure(row, col)
-})
+// onBoardClick((row, col) => {
+//   Board.setFigure(row, col)
+// })
 
-document.querySelector<HTMLButtonElement>('#start-game')!
-  .onclick = () => {
-    Board.startGame(true)
-    setInterval(() => Board.timerTick(), 1000)
-  }
+// document.querySelector<HTMLButtonElement>('#start-game')!
+//   .onclick = () => {
+//     Board.startGame(true)
+//     setInterval(() => Board.timerTick(), 1000)
+//   }
 
-document.querySelector<HTMLButtonElement>('#finish-game')!
-  .onclick = () => {
-    Board.finishGame()
-  }
+// document.querySelector<HTMLButtonElement>('#finish-game')!
+//   .onclick = () => {
+//     Board.finishGame()
+//   }
+
+import GameWindow from "./GameWindow.js"
+import { delay, Second } from "./misc.js"
+
+async function main() {
+  await delay(3 * Second)
+  GameWindow.layout = 'searching'
+  await delay(3 * Second)
+  GameWindow.layout = 'game'
+}
+
+main()

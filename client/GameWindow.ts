@@ -17,7 +17,6 @@ type LayoutFactoryProp =
   | Element
   | Array<string | Element>
 
-
 function layoutFactory(layoutProp: LayoutFactoryProp): Layout {
   if(layoutProp instanceof Array) {
     return new CompositeLayout(layoutProp)
@@ -80,29 +79,46 @@ class SimpleLayout implements Layout {
 
 // GAME WINDOW
 
-class GameWindow<T extends {[layoutName: string]: Layout}> {
+class GameWindow<T extends string, D extends T> {
+
+  private readonly layouts: {[name in T]: Layout}
+  private _layout: T
 
   constructor(
-    private readonly layouts: T,
-    private _currentLayout: keyof T,
-  ) {
-    Object.entries(layouts).forEach(([layoutName, layout]) => {
-      layout.active = layoutName === _currentLayout
-    })
+    layoutProps: {[name in T]: LayoutFactoryProp},
+    _layout: D
+  ){
+    this._layout = _layout
+    const layoutsEntries = Object
+      .entries<LayoutFactoryProp>(layoutProps)
+      .map(([name, prop]) => [name, layoutFactory(prop)])
+    this.layouts = Object.fromEntries(layoutsEntries)
+    this.hideExceptActive()
   }
 
   get layout() {
-    return this._currentLayout
+    return this._layout
   }
 
-  set layout(value: keyof T) {
-    const prev = this.layouts[this._currentLayout]
+  set layout(value: T) {
+    const prev = this.layouts[this._layout]
     prev.active = false
-    this._currentLayout = value
+    this._layout = value
     const cur = this.layouts[value]
     cur.active = true
   }
 
+  private hideExceptActive() {
+    Object.entries<Layout>(this.layouts).forEach(([name, layout]) => {
+      layout.active = name === this._layout 
+    })
+  }
+
 }
 
-// GAME WINDOW BUILDER
+export default new GameWindow({
+  'no-game': '#window__no-game',
+  'searching': '#window__searching',
+  'game': ['#window__game', '#finish-game']
+}, 'no-game')
+

@@ -15,7 +15,7 @@
     <main class="game-container">
 
       <!-- When no game and no search -->
-      <div class="game-state-widget">
+      <div class="game-state-widget" id="window__no-game">
         <h1>Game has not been started yet.</h1>
         <button id="start-game">
           Find game!
@@ -23,7 +23,7 @@
       </div>
 
       <!-- When there is a search for game -->
-      <div class="game-state-widget closed">
+      <div class="game-state-widget closed" id="window__searching">
         <h1>Searching for your game...</h1>
         <button id="cancel-game">
           Cancel!
@@ -31,7 +31,7 @@
       </div>
 
       <!-- When there is a game running -->
-      <div class="game closed">
+      <div class="game" id="window__game">
         <h1 class="timer">No time specified</h1>
         <div id="tictactoe">
           <div></div>
@@ -47,7 +47,7 @@
         <h1 class="turn">No turn specified</h1>
       </div>
 
-      <button id="finish-game" class="closed">
+      <button id="finish-game">
         Exit game
       </button>
 

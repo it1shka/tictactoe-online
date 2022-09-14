@@ -1,4 +1,3 @@
-"use strict";
 function find(query) {
     const element = document.querySelector(query);
     if (!element) {
@@ -56,22 +55,32 @@ class SimpleLayout {
 }
 // GAME WINDOW
 class GameWindow {
-    constructor(layouts, _currentLayout) {
-        this.layouts = layouts;
-        this._currentLayout = _currentLayout;
-        Object.entries(layouts).forEach(([layoutName, layout]) => {
-            layout.active = layoutName === _currentLayout;
-        });
+    constructor(layoutProps, _layout) {
+        this._layout = _layout;
+        const layoutsEntries = Object
+            .entries(layoutProps)
+            .map(([name, prop]) => [name, layoutFactory(prop)]);
+        this.layouts = Object.fromEntries(layoutsEntries);
+        this.hideExceptActive();
     }
     get layout() {
-        return this._currentLayout;
+        return this._layout;
     }
     set layout(value) {
-        const prev = this.layouts[this._currentLayout];
+        const prev = this.layouts[this._layout];
         prev.active = false;
-        this._currentLayout = value;
+        this._layout = value;
         const cur = this.layouts[value];
         cur.active = true;
     }
+    hideExceptActive() {
+        Object.entries(this.layouts).forEach(([name, layout]) => {
+            layout.active = name === this._layout;
+        });
+    }
 }
-// GAME WINDOW BUILDER
+export default new GameWindow({
+    'no-game': '#window__no-game',
+    'searching': '#window__searching',
+    'game': ['#window__game', '#finish-game']
+}, 'no-game');
