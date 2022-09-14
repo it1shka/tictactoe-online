@@ -1,9 +1,6 @@
 import { formatSeconds } from "./misc.js"
 
 class Board {
-  private gameElement: HTMLElement
-  private finishGameElement: HTMLElement
-  private nogameElement: HTMLElement
   private timerElement: HTMLElement
   private turnElement: HTMLElement
 
@@ -11,6 +8,15 @@ class Board {
   private isPlayingCross!: boolean
   private _turn!: boolean
   private _timeLeft!: number
+
+  constructor() {
+    const gameRoot = document.querySelector('.game')!
+    this.timerElement = gameRoot.querySelector('.timer')!
+    this.turnElement = gameRoot.querySelector('.turn')!
+
+    const root = document.querySelector<HTMLDivElement>('#tictactoe')!
+    this.board = Array.from(root.children) as HTMLDivElement[]
+  }
 
   private get turn() {
     return this._turn
@@ -38,17 +44,6 @@ class Board {
 
   }
 
-  constructor() {
-    this.nogameElement = document.querySelector('.no-game')!
-    this.gameElement = document.querySelector('.game')!
-    this.finishGameElement = document.querySelector('#finish-game')!
-    this.timerElement = this.gameElement.querySelector('.timer')!
-    this.turnElement = this.gameElement.querySelector('.turn')!
-
-    const root = document.querySelector<HTMLDivElement>('#tictactoe')!
-    this.board = Array.from(root.children) as HTMLDivElement[]
-  }
-
   startGame(isPlayingCross: boolean) {
     for(const each of this.board) {
       each.classList.remove('cross', 'zero')
@@ -56,9 +51,6 @@ class Board {
     this.isPlayingCross = isPlayingCross
     this.turn = true
     this.timeLeft = 60
-    this.nogameElement.classList.add('closed')
-    this.gameElement.classList.remove('closed')
-    this.finishGameElement.classList.remove('closed')
   }
 
   setFigure(row: number, column: number) {
@@ -72,12 +64,6 @@ class Board {
 
   timerTick() {
     this.timeLeft--
-  }
-
-  finishGame() {
-    this.gameElement.classList.add('closed')
-    this.finishGameElement.classList.add('closed')
-    this.nogameElement.classList.remove('closed')
   }
 }
 

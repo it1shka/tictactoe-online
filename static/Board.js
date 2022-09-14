@@ -1,11 +1,9 @@
 import { formatSeconds } from "./misc.js";
 class Board {
     constructor() {
-        this.nogameElement = document.querySelector('.no-game');
-        this.gameElement = document.querySelector('.game');
-        this.finishGameElement = document.querySelector('#finish-game');
-        this.timerElement = this.gameElement.querySelector('.timer');
-        this.turnElement = this.gameElement.querySelector('.turn');
+        const gameRoot = document.querySelector('.game');
+        this.timerElement = gameRoot.querySelector('.timer');
+        this.turnElement = gameRoot.querySelector('.turn');
         const root = document.querySelector('#tictactoe');
         this.board = Array.from(root.children);
     }
@@ -38,9 +36,6 @@ class Board {
         this.isPlayingCross = isPlayingCross;
         this.turn = true;
         this.timeLeft = 60;
-        this.nogameElement.classList.add('closed');
-        this.gameElement.classList.remove('closed');
-        this.finishGameElement.classList.remove('closed');
     }
     setFigure(row, column) {
         const cell = this.board[row * 3 + column];
@@ -52,11 +47,6 @@ class Board {
     }
     timerTick() {
         this.timeLeft--;
-    }
-    finishGame() {
-        this.gameElement.classList.add('closed');
-        this.finishGameElement.classList.add('closed');
-        this.nogameElement.classList.remove('closed');
     }
 }
 export default new Board();
