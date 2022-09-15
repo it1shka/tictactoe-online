@@ -11,6 +11,7 @@ class Network {
             showAlert('Established WebSocket connection!');
             // additional logic
             GameWindow.layout = 'no-game';
+            //
         };
         this.onmessage = (ev) => {
             try {
@@ -38,7 +39,6 @@ class Network {
             console.error(`WebSocket closed due to reason: ${reason}.`);
             showAlert(`WebSocket closed. Reconnecting in ${this.reconnectSeconds} seconds...`);
             // some additional logic to close currently running game
-            this.handlers = {};
             GameWindow.layout = 'no-game';
             //
             await delay(this.reconnectSeconds * Second);

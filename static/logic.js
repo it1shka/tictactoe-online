@@ -70,15 +70,15 @@ export function gameStarted(myFigure) {
         cleanup();
     };
     function cleanup() {
-        const handlersToCleanup = [
-            "figure" /* SET_FIGURE */,
-            "winner" /* YOU_ARE_WINNER */,
-            "looser" /* YOU_ARE_LOOSER */,
-            "closed" /* GAME_CLOSED */
-        ];
-        for (const each of handlersToCleanup) {
-            Network.removeHandler(each);
-        }
+        // const handlersToCleanup = [
+        //   MessageType.SET_FIGURE,
+        //   MessageType.YOU_ARE_WINNER,
+        //   MessageType.YOU_ARE_LOOSER,
+        //   MessageType.GAME_CLOSED
+        // ] as const
+        // for(const each of handlersToCleanup) {
+        //   Network.removeHandler(each)
+        // }
         GameWindow.layout = 'no-game';
     }
 }

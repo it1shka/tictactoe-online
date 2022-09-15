@@ -85,15 +85,15 @@ export function gameStarted(myFigure: boolean) {
   }
 
   function cleanup() {
-    const handlersToCleanup = [
-      MessageType.SET_FIGURE,
-      MessageType.YOU_ARE_WINNER,
-      MessageType.YOU_ARE_LOOSER,
-      MessageType.GAME_CLOSED
-    ] as const
-    for(const each of handlersToCleanup) {
-      Network.removeHandler(each)
-    }
+    // const handlersToCleanup = [
+    //   MessageType.SET_FIGURE,
+    //   MessageType.YOU_ARE_WINNER,
+    //   MessageType.YOU_ARE_LOOSER,
+    //   MessageType.GAME_CLOSED
+    // ] as const
+    // for(const each of handlersToCleanup) {
+    //   Network.removeHandler(each)
+    // }
     GameWindow.layout = 'no-game'
   }
 }
