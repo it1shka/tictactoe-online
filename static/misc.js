@@ -1,3 +1,10 @@
+export function find(query) {
+    const element = document.querySelector(query);
+    if (!element) {
+        throw new Error(`Element "${query}" not found.`);
+    }
+    return element;
+}
 export const Second = 1000;
 export function delay(time) {
     return new Promise(resolve => {

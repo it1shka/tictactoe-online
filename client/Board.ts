@@ -75,6 +75,9 @@ export function onBoardClick(handler: (row: number, col: number) => void) {
   for(let row = 0; row < 3; row++) {
     for(let col = 0; col < 3; col++) {
       const current = board[row * 3 + col]
+      // checking if the cell is not empty
+      // then cancelling handler invokation
+      if(current.classList.contains('cross') || current.classList.contains('zero')) return
       current.onclick = () => handler(row, col)
     }
   }

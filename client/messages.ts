@@ -59,6 +59,7 @@ export interface MessageCloseGame {
 
 export interface MessageGameStarted {
   messageType: 'started'
+  isPlayingCrosses: boolean
 }
 
 export interface MessageYouAreWinner {

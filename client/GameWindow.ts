@@ -1,10 +1,4 @@
-function find(query: string) {
-  const element = document.querySelector(query)
-  if(!element) {
-    throw new Error(`Element "${query}" not found.`)
-  }
-  return element
-}
+import { find } from './misc.js'
 
 // LAYOUT
 

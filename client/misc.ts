@@ -1,3 +1,11 @@
+export function find<T extends Element = Element>(query: string) {
+  const element = document.querySelector(query)
+  if(!element) {
+    throw new Error(`Element "${query}" not found.`)
+  }
+  return element as T
+}
+
 export const Second = 1000
 
 export function delay(time: number) {

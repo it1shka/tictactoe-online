@@ -31,14 +31,11 @@
 //     Board.finishGame()
 //   }
 import GameWindow from "./GameWindow.js";
-import Chat, { onFormMessageSubmit } from './Chat.js';
 import { delay, Second } from "./misc.js";
 import Board, { onBoardClick } from "./Board.js";
 import './Network.js';
-Chat.pushModalMessage('Start searching for an opponent!');
-onFormMessageSubmit(message => {
-    Chat.pushMessage(message, true);
-});
+import { activateChat } from "./logic.js";
+activateChat();
 async function main() {
     await delay(Second * 3);
     GameWindow.layout = 'searching';
