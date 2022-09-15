@@ -31,7 +31,12 @@ func (player *Player) ListenMessages() {
 	defer player.cleanupOnClose()
 
 	for {
-		var message map[string]any
+		var message struct {
+			Mtype   MessageType `json:"messageType"`
+			Content string      `json:"content,omitempty"`
+			Row     int         `json:"row,omitempty"`
+			Column  int         `json:"column,omitempty"`
+		}
 		if err := player.conn.ReadJSON(&message); err != nil {
 			if !websocket.IsCloseError(err) && !websocket.IsUnexpectedCloseError(err) {
 				fmt.Println(err)
@@ -39,26 +44,13 @@ func (player *Player) ListenMessages() {
 			break
 		}
 
-		switch message["messageType"] {
+		switch message.Mtype {
 
 		case MessageText:
-			if content, ok := message["content"].(string); ok {
-				player.MessageOpponent(content)
-			} else {
-				fmt.Printf("'content' field is not a string: %v\n", content)
-			}
+			player.MessageOpponent(message.Content)
 
 		case MessageSetFigure:
-			row, ok := message["row"].(int)
-			if !ok {
-				fmt.Printf("'row' field is not an int: %v\n", row)
-				break
-			}
-			col, ok := message["column"].(int)
-			if !ok {
-				fmt.Printf("'column' field is not an int: %v\n", col)
-				break
-			}
+			row, col := message.Row, message.Column
 			player.SetFigure(row, col)
 
 		case MessageStartGame:
@@ -69,9 +61,6 @@ func (player *Player) ListenMessages() {
 
 		case MessageCloseGame:
 			player.CloseGame()
-
-		default:
-			fmt.Printf("Unexpected 'messageType' field: %v\n", message["messageType"])
 
 		}
 	}

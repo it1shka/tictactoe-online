@@ -1,4 +1,5 @@
-import { IncomingMessage, IncomingMessageType, MessageGameClosed, MessageGameStarted, MessageSetFigure, MessageText, MessageYouAreLooser, MessageYouAreWinner, OutcomingMessage } from "./messages.js"
+import GameWindow from "./GameWindow.js"
+import { IncomingMessage, MessageGameClosed, MessageGameStarted, MessageSetFigure, MessageText, MessageYouAreLooser, MessageYouAreWinner, OutcomingMessage } from "./messages.js"
 import { delay, Second, showAlert, websocketCloseReason } from "./misc.js"
 
 type Handlers = {
@@ -14,7 +15,7 @@ type Handler<T extends keyof Handlers> = (message: Handlers[T]) => any
 
 class Network {
   private reconnectSeconds = 10
-  private readonly handlers: {[T in keyof Handlers]?: Handler<T>} = {}
+  private handlers: {[T in keyof Handlers]?: Handler<T>} = {}
   private ws: WebSocket | null = null
 
   constructor(private readonly url: string) {}
@@ -69,6 +70,10 @@ class Network {
     const reason = websocketCloseReason(code)
     console.error(`WebSocket closed due to reason: ${reason}.`)
     showAlert(`WebSocket closed. Reconnecting in ${this.reconnectSeconds} seconds...`)
+    // some additional logic to close currently running game
+    this.handlers = {}
+    GameWindow.layout = 'no-game'
+    //
     await delay(this.reconnectSeconds * Second)
     this.connect()
   }

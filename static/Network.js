@@ -1,3 +1,4 @@
+import GameWindow from "./GameWindow.js";
 import { delay, Second, showAlert, websocketCloseReason } from "./misc.js";
 class Network {
     constructor(url) {
@@ -34,6 +35,10 @@ class Network {
             const reason = websocketCloseReason(code);
             console.error(`WebSocket closed due to reason: ${reason}.`);
             showAlert(`WebSocket closed. Reconnecting in ${this.reconnectSeconds} seconds...`);
+            // some additional logic to close currently running game
+            this.handlers = {};
+            GameWindow.layout = 'no-game';
+            //
             await delay(this.reconnectSeconds * Second);
             this.connect();
         };
