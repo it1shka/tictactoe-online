@@ -47,7 +47,7 @@ func (game *Game) figureOf(player *Player) Figure {
 	if game.crossesPlayer == player {
 		return FigureCross
 	}
-	return FigureCross
+	return FigureZero
 }
 
 // FUNCTIONS FOR BOARD CHECKING...
@@ -94,7 +94,8 @@ const (
 func (game *Game) checkBoardStatus() BoardStatus {
 	withSpaces := false
 	for _, row := range game.getAllRows() {
-		switch checkRowStatus(row) {
+		status := checkRowStatus(row)
+		switch status {
 		case WithSpaces:
 			withSpaces = true
 		case FullCrosses:

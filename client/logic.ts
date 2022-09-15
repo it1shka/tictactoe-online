@@ -25,13 +25,13 @@ export function activateChat() {
 
 export function gameStarted(myFigure: boolean) {
   // initializing game
-  let turn = true
+  let turn = true, finished = false
   Board.startGame(myFigure)
   GameWindow.layout = 'game'
 
   // handling player moves...
   onBoardClick((row, column) => {
-    if(turn !== myFigure) return
+    if(turn !== myFigure || finished) return
     Network.send({
       messageType: MessageType.SET_FIGURE,
       row, column
@@ -53,15 +53,20 @@ export function gameStarted(myFigure: boolean) {
     Chat.pushModalMessage(message)
   }
 
+  function finish(message: string) {
+    chatAndAlert(message)
+    finished = true
+  }
+
   Network.on(MessageType.YOU_ARE_WINNER, () => 
-    chatAndAlert('You are winner 👑'))
+    finish('You are winner 👑'))
 
   Network.on(MessageType.DRAW, () => {
-    chatAndAlert('Draw 🤝')
+    finish('Draw 🤝')
   })
 
   Network.on(MessageType.YOU_ARE_LOOSER, () => 
-    chatAndAlert('You are looser 👶🏻'))
+    finish('You are looser 👶🏻'))
   
   Network.on(MessageType.GAME_CLOSED, () => {
     chatAndAlert('Opponent left the game.')

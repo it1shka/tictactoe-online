@@ -21,12 +21,12 @@ export function activateChat() {
 }
 export function gameStarted(myFigure) {
     // initializing game
-    let turn = true;
+    let turn = true, finished = false;
     Board.startGame(myFigure);
     GameWindow.layout = 'game';
     // handling player moves...
     onBoardClick((row, column) => {
-        if (turn !== myFigure)
+        if (turn !== myFigure || finished)
             return;
         Network.send({
             messageType: "figure" /* SET_FIGURE */,
@@ -47,8 +47,15 @@ export function gameStarted(myFigure) {
         showAlert(message);
         Chat.pushModalMessage(message);
     }
-    Network.on("winner" /* YOU_ARE_WINNER */, () => chatAndAlert('You are winner 👑'));
-    Network.on("looser" /* YOU_ARE_LOOSER */, () => chatAndAlert('You are looser 👶🏻'));
+    function finish(message) {
+        chatAndAlert(message);
+        finished = true;
+    }
+    Network.on("winner" /* YOU_ARE_WINNER */, () => finish('You are winner 👑'));
+    Network.on("draw" /* DRAW */, () => {
+        finish('Draw 🤝');
+    });
+    Network.on("looser" /* YOU_ARE_LOOSER */, () => finish('You are looser 👶🏻'));
     Network.on("closed" /* GAME_CLOSED */, () => {
         chatAndAlert('Opponent left the game.');
         cleanup();
