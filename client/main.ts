@@ -1,8 +1,8 @@
 import Network from './Network.js'
 import { activateChat, gameStarted } from './logic.js'
-import { find } from './misc'
+import { find } from './misc.js'
 import GameWindow from './GameWindow.js'
-import { MessageType } from './messages'
+import { MessageType } from './messages.js'
 
 activateChat()
 

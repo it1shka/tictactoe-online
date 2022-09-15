@@ -32,7 +32,7 @@ func (player *Player) ListenMessages() {
 
 	for {
 		var message map[string]any
-		if err := player.conn.ReadJSON(message); err != nil {
+		if err := player.conn.ReadJSON(&message); err != nil {
 			if !websocket.IsCloseError(err) && !websocket.IsUnexpectedCloseError(err) {
 				fmt.Println(err)
 			}
