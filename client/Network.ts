@@ -44,6 +44,9 @@ class Network {
   private onopen = (_: Event): any => {
     console.log(`Established connection to ${this.url}.`)
     showAlert('Established WebSocket connection!')
+
+    // additional logic
+    GameWindow.layout = 'no-game'
   }
 
   private onmessage = (ev: MessageEvent<any>): any => {

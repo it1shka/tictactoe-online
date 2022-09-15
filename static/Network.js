@@ -9,6 +9,8 @@ class Network {
         this.onopen = (_) => {
             console.log(`Established connection to ${this.url}.`);
             showAlert('Established WebSocket connection!');
+            // additional logic
+            GameWindow.layout = 'no-game';
         };
         this.onmessage = (ev) => {
             try {

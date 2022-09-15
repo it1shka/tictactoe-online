@@ -110,18 +110,15 @@ func (game *Game) CloseGame(author *Player) {
 		return
 	}
 
-	// if !game.finished {
-	// 	game.finished = true
-	// 	SendWinnerMessageTo(game.opponent(author))
-	// 	SendLooserMessageTo(author)
-	// }
-
-	SendOpponentClosedGameTo(game.opponent(author))
 	if !game.finished {
 		game.finished = true
 		SendWinnerMessageTo(game.opponent(author))
 		SendLooserMessageTo(author)
 	}
+
+	SendOpponentClosedGameTo(game.opponent(author))
+	// fixing the bug
+	author.game, game.opponent(author).game = nil, nil
 	game.crossesPlayer, game.zeroesPlayer, game.turn = nil, nil, nil
 	game.closed = true
 }
