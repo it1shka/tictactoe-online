@@ -1,16 +1,16 @@
 export const enum MessageType {
   // both incoming and outcoming
-  TEXT = 'text',
+  TEXT_MESSAGE = 'text',
   SET_FIGURE = 'figure',
-  // outcoming messages
+  // outcoming
   START_GAME = 'start',
-  CANCEL_SEARCHING = 'cancel',
+  CANCEL_GAME = 'cancel',
   CLOSE_GAME = 'close',
-  // incoming messages
+  // incoming
   GAME_STARTED = 'started',
-  WINNER = 'winner',
-  LOOSER = 'looser',
-  GAME_CLOSED = 'closed'
+  YOU_ARE_WINNER = 'winner',
+  YOU_ARE_LOOSER = 'looser',
+  GAME_CLOSED = 'closed',
 }
 
 export type OutcomingMessage = 
@@ -20,6 +20,9 @@ export type OutcomingMessage =
   | MessageCancelSearching
   | MessageCloseGame
 
+export type OutcomingMessageType = 
+  | OutcomingMessage['messageType']
+
 export type IncomingMessage =
   | MessageText
   | MessageSetFigure
@@ -28,41 +31,44 @@ export type IncomingMessage =
   | MessageYouAreLooser
   | MessageGameClosed
 
-interface MessageText {
-  messageType: MessageType.TEXT
+export type IncomingMessageType = 
+  | IncomingMessage['messageType']
+
+export interface MessageText {
+  messageType: 'text'
   content: string
 }
 
-interface MessageSetFigure {
-  messageType: MessageType.SET_FIGURE
+export interface MessageSetFigure {
+  messageType: 'figure'
   row: number
   column: number
 }
 
-interface MessageStartGame {
-  messageType: MessageType.START_GAME
+export interface MessageStartGame {
+  messageType: 'start'
 }
 
-interface MessageCancelSearching {
-  messageType: MessageType.CANCEL_SEARCHING
+export interface MessageCancelSearching {
+  messageType: 'cancel'
 }
 
-interface MessageCloseGame {
-  messageType: MessageType.CLOSE_GAME
+export interface MessageCloseGame {
+  messageType: 'close'
 }
 
-interface MessageGameStarted {
-  messageType: MessageType.GAME_STARTED
+export interface MessageGameStarted {
+  messageType: 'started'
 }
 
-interface MessageYouAreWinner {
-  messageType: MessageType.WINNER
+export interface MessageYouAreWinner {
+  messageType: 'winner'
 }
 
-interface MessageYouAreLooser {
-  messageType: MessageType.LOOSER
+export interface MessageYouAreLooser {
+  messageType: 'looser'
 }
 
-interface MessageGameClosed {
-  messageType: MessageType.GAME_CLOSED
+export interface MessageGameClosed {
+  messageType: 'closed'
 }

@@ -1,22 +1,30 @@
-import { IncomingMessage, OutcomingMessage } from "./messages.js"
+import { IncomingMessage, IncomingMessageType, MessageGameClosed, MessageGameStarted, MessageSetFigure, MessageText, MessageYouAreLooser, MessageYouAreWinner, OutcomingMessage } from "./messages.js"
 import { delay, Second, showAlert, websocketCloseReason } from "./misc.js"
 
-type Handler = (message: IncomingMessage) => void
-type Handlers = {[messageType: string]: Handler}
+type Handlers = {
+  text: MessageText
+  figure: MessageSetFigure
+  started: MessageGameStarted
+  winner: MessageYouAreWinner
+  looser: MessageYouAreLooser
+  closed: MessageGameClosed
+}
+
+type Handler<T extends keyof Handlers> = (message: Handlers[T]) => any
 
 class Network {
   private reconnectSeconds = 10
-  private readonly handlers: Handlers = {}
+  private readonly handlers: {[T in keyof Handlers]?: Handler<T>} = {}
   private ws: WebSocket | null = null
 
   constructor(private readonly url: string) {}
 
-  on(messageType: IncomingMessage['messageType'], handler: Handler) {
-    this.handlers[messageType] = handler
+  on<T extends keyof Handlers>(messageType: T, handler: Handler<T>) {
+    this.handlers[messageType] = handler as any
     return this
   }
 
-  removeHandler(messageType: IncomingMessage['messageType']) {
+  removeHandler(messageType: keyof Handlers) {
     delete this.handlers[messageType]
   }
 
@@ -41,8 +49,8 @@ class Network {
     try {
       const message: IncomingMessage = JSON.parse(ev.data)
       const messageType = message['messageType']
-      const handler: Handler | undefined = this.handlers[messageType]
-      if(handler) handler(message)
+      const handler = this.handlers[messageType]
+      if(handler) handler(message as never)
     } catch(error) {
       console.log(`Unknown message: ${ev.data}`)
       showAlert('Error: WebSocket got unknown message')
