@@ -31,5 +31,22 @@
 //     Board.finishGame()
 //   }
 import GameWindow from "./GameWindow.js";
-import './Chat.js';
-GameWindow.layout = 'game';
+import Chat, { onFormMessageSubmit } from './Chat.js';
+import { delay, Second } from "./misc.js";
+import Board, { onBoardClick } from "./Board.js";
+import './Network.js';
+Chat.pushModalMessage('Start searching for an opponent!');
+onFormMessageSubmit(message => {
+    Chat.pushMessage(message, true);
+});
+async function main() {
+    await delay(Second * 3);
+    GameWindow.layout = 'searching';
+    await delay(Second * 3);
+    GameWindow.layout = 'game';
+    Board.startGame(true);
+    onBoardClick((row, col) => {
+        Board.setFigure(row, col);
+    });
+}
+main();
