@@ -14,7 +14,25 @@ export function delay(time: number) {
   })
 }
 
-export async function showAlert(message?: string) {
+export const showAlert = (() => {
+  const messageQueue: Array<string | undefined> = []
+
+  return async function(message?: string) {
+    if(messageQueue.length > 0) {
+      messageQueue.push(message)
+      return
+    }
+
+    messageQueue.push(message)
+    while(true) {
+      await showAlertAsync(messageQueue[0])
+      messageQueue.shift()
+      if(messageQueue.length <= 0) break
+    }
+  }
+})()
+
+export async function showAlertAsync(message?: string) {
   const alertElement = document.createElement('aside')
   alertElement.classList.add('alert-window')
   alertElement.innerText = message ?? 'Warning!'

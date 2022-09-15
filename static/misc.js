@@ -11,7 +11,23 @@ export function delay(time) {
         setTimeout(resolve, time);
     });
 }
-export async function showAlert(message) {
+export const showAlert = (() => {
+    const messageQueue = [];
+    return async function (message) {
+        if (messageQueue.length > 0) {
+            messageQueue.push(message);
+            return;
+        }
+        messageQueue.push(message);
+        while (true) {
+            await showAlertAsync(messageQueue[0]);
+            messageQueue.shift();
+            if (messageQueue.length <= 0)
+                break;
+        }
+    };
+})();
+export async function showAlertAsync(message) {
     const alertElement = document.createElement('aside');
     alertElement.classList.add('alert-window');
     alertElement.innerText = message !== null && message !== void 0 ? message : 'Warning!';
