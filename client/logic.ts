@@ -10,6 +10,7 @@ export function activateChat() {
   Chat.pushModalMessage('Type "Find Game" to find somebody to play with!')
 
   Network.on(MessageType.TEXT_MESSAGE, ({ content }) => {
+    if(!Chat.isOpened) showAlert(`Chat: ${content}`)
     Chat.pushMessage(content, false)
   })
 
@@ -54,6 +55,10 @@ export function gameStarted(myFigure: boolean) {
 
   Network.on(MessageType.YOU_ARE_WINNER, () => 
     chatAndAlert('You are winner 👑'))
+
+  Network.on(MessageType.DRAW, () => {
+    chatAndAlert('Draw 🤝')
+  })
 
   Network.on(MessageType.YOU_ARE_LOOSER, () => 
     chatAndAlert('You are looser 👶🏻'))

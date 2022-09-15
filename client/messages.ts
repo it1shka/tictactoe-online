@@ -9,6 +9,7 @@ export const enum MessageType {
   // incoming
   GAME_STARTED = 'started',
   YOU_ARE_WINNER = 'winner',
+  DRAW = 'draw',
   YOU_ARE_LOOSER = 'looser',
   GAME_CLOSED = 'closed',
 }
@@ -28,6 +29,7 @@ export type IncomingMessage =
   | MessageSetFigure
   | MessageGameStarted
   | MessageYouAreWinner
+  | MessageDraw
   | MessageYouAreLooser
   | MessageGameClosed
 
@@ -64,6 +66,10 @@ export interface MessageGameStarted {
 
 export interface MessageYouAreWinner {
   messageType: 'winner'
+}
+
+export interface MessageDraw {
+  messageType: 'draw'
 }
 
 export interface MessageYouAreLooser {

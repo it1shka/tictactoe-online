@@ -7,6 +7,8 @@ export function activateChat() {
     Chat.pushModalMessage('This is a chat with your opponents.');
     Chat.pushModalMessage('Type "Find Game" to find somebody to play with!');
     Network.on("text" /* TEXT_MESSAGE */, ({ content }) => {
+        if (!Chat.isOpened)
+            showAlert(`Chat: ${content}`);
         Chat.pushMessage(content, false);
     });
     onFormMessageSubmit(message => {

@@ -1,5 +1,5 @@
 import GameWindow from "./GameWindow.js"
-import { IncomingMessage, MessageGameClosed, MessageGameStarted, MessageSetFigure, MessageText, MessageYouAreLooser, MessageYouAreWinner, OutcomingMessage } from "./messages.js"
+import { IncomingMessage, MessageDraw, MessageGameClosed, MessageGameStarted, MessageSetFigure, MessageText, MessageYouAreLooser, MessageYouAreWinner, OutcomingMessage } from "./messages.js"
 import { delay, Second, showAlert, websocketCloseReason } from "./misc.js"
 
 type Handlers = {
@@ -7,6 +7,7 @@ type Handlers = {
   figure: MessageSetFigure
   started: MessageGameStarted
   winner: MessageYouAreWinner
+  draw: MessageDraw
   looser: MessageYouAreLooser
   closed: MessageGameClosed
 }

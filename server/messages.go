@@ -14,6 +14,7 @@ const (
 	MessageGameStarted  = MessageType("started")
 	MessageYouAreWinner = MessageType("winner")
 	MessageYouAreLooser = MessageType("looser")
+	MessageDraw         = MessageType("draw")
 	MessageGameClosed   = MessageType("closed")
 )
 
@@ -48,6 +49,12 @@ func SendWinnerMessageTo(player *Player) {
 func SendLooserMessageTo(player *Player) {
 	player.SendToClient(map[string]any{
 		"messageType": MessageYouAreLooser,
+	})
+}
+
+func SendDrawMessageTo(player *Player) {
+	player.SendToClient(map[string]any{
+		"messageType": MessageDraw,
 	})
 }
 
