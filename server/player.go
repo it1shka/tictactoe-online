@@ -123,6 +123,9 @@ func (player *Player) SetFigure(row, col int) {
 }
 
 func (player *Player) FindNewGame() {
+	if player.game != nil {
+		return
+	}
 	matchmakingQueue.Append(player)
 }
 
