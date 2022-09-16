@@ -57,6 +57,13 @@ export function gameStarted(myFigure) {
         finish('Opponent left the game.');
         cleanup();
     });
+    // timer handlers
+    Network.on("tick" /* TICK */, () => {
+        Board.timerTick();
+    });
+    Network.on("timeout" /* TIMEOUT */, () => {
+        chatAndAlert('You ran out of time 😔');
+    });
     // taking care of exiting game and 
     // cleaning everything up
     find('#finish-game').onclick = () => {

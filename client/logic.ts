@@ -70,6 +70,15 @@ export function gameStarted(myFigure: boolean) {
     finish('Opponent left the game.')
     cleanup()
   })
+
+  // timer handlers
+  Network.on(MessageType.TICK, () => {
+    Board.timerTick()
+  })
+
+  Network.on(MessageType.TIMEOUT, () => {
+    chatAndAlert('You ran out of time 😔')
+  })
   
   // taking care of exiting game and 
   // cleaning everything up

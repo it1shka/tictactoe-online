@@ -14,6 +14,10 @@ export const enum MessageType {
   DRAW = 'draw',
   YOU_ARE_LOOSER = 'looser',
   GAME_CLOSED = 'closed',
+
+  // dedicated to time
+  TICK = 'tick',
+  TIMEOUT = 'timeout'
 }
 
 export type OutcomingMessage = 
@@ -34,50 +38,60 @@ export type IncomingMessage =
   | MessageDraw
   | MessageYouAreLooser
   | MessageGameClosed
+  | MessageTick
+  | MessageTimeout
 
 export type IncomingMessageType = 
   | IncomingMessage['messageType']
 
-export interface MessageText {
+interface MessageText {
   messageType: MessageType.TEXT_MESSAGE
   content: string
 }
 
-export interface MessageSetFigure {
+interface MessageSetFigure {
   messageType: MessageType.SET_FIGURE
   row: number
   column: number
 }
 
-export interface MessageStartGame {
+interface MessageStartGame {
   messageType: MessageType.START_GAME
 }
 
-export interface MessageCancelSearching {
+interface MessageCancelSearching {
   messageType: MessageType.CANCEL_GAME
 }
 
-export interface MessageCloseGame {
+interface MessageCloseGame {
   messageType: MessageType.CLOSE_GAME
 }
 
-export interface MessageGameStarted {
+interface MessageGameStarted {
   messageType: MessageType.GAME_STARTED
   isPlayingCrosses: boolean
 }
 
-export interface MessageYouAreWinner {
+interface MessageYouAreWinner {
   messageType: MessageType.YOU_ARE_WINNER
 }
 
-export interface MessageDraw {
+interface MessageDraw {
   messageType: MessageType.DRAW
 }
 
-export interface MessageYouAreLooser {
+interface MessageYouAreLooser {
   messageType: MessageType.YOU_ARE_LOOSER
 }
 
-export interface MessageGameClosed {
+interface MessageGameClosed {
   messageType: MessageType.GAME_CLOSED
+}
+
+interface MessageTick {
+  messageType: MessageType.TICK
+}
+
+interface MessageTimeout {
+  messageType: MessageType.TIMEOUT
 }
