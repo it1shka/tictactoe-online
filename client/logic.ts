@@ -2,7 +2,7 @@ import Board, { onBoardClick } from './Board.js'
 import Chat, { onFormMessageSubmit } from './Chat.js'
 import GameWindow from './GameWindow.js'
 import { MessageType } from './messages.js'
-import { find, showAlert } from './misc.js'
+import { chatAndAlert, find, showAlert } from './misc.js'
 import Network from './Network.js'
 
 export function activateChat() {
@@ -29,6 +29,8 @@ export function gameStarted(myFigure: boolean) {
   Board.startGame(myFigure)
   GameWindow.layout = 'game'
 
+  chatAndAlert('Game started!')
+
   // handling player moves...
   onBoardClick((row, column) => {
     if(turn !== myFigure || finished) return
@@ -48,10 +50,6 @@ export function gameStarted(myFigure: boolean) {
 
   // listening for other messages...
   // messages dedicated to server game state
-  function chatAndAlert(message: string) {
-    showAlert(message)
-    Chat.pushModalMessage(message)
-  }
 
   function finish(message: string) {
     chatAndAlert(message)
@@ -69,7 +67,7 @@ export function gameStarted(myFigure: boolean) {
     finish('You are looser 👶🏻'))
   
   Network.on(MessageType.GAME_CLOSED, () => {
-    chatAndAlert('Opponent left the game.')
+    finish('Opponent left the game.')
     cleanup()
   })
   

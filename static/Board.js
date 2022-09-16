@@ -1,4 +1,4 @@
-import { formatSeconds } from "./misc.js";
+import { formatSeconds } from './misc.js';
 class Board {
     constructor() {
         const gameRoot = document.querySelector('.game');

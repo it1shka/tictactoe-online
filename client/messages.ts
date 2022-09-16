@@ -2,10 +2,12 @@ export const enum MessageType {
   // both incoming and outcoming
   TEXT_MESSAGE = 'text',
   SET_FIGURE = 'figure',
+
   // outcoming
   START_GAME = 'start',
   CANCEL_GAME = 'cancel',
   CLOSE_GAME = 'close',
+  
   // incoming
   GAME_STARTED = 'started',
   YOU_ARE_WINNER = 'winner',
@@ -37,45 +39,45 @@ export type IncomingMessageType =
   | IncomingMessage['messageType']
 
 export interface MessageText {
-  messageType: 'text'
+  messageType: MessageType.TEXT_MESSAGE
   content: string
 }
 
 export interface MessageSetFigure {
-  messageType: 'figure'
+  messageType: MessageType.SET_FIGURE
   row: number
   column: number
 }
 
 export interface MessageStartGame {
-  messageType: 'start'
+  messageType: MessageType.START_GAME
 }
 
 export interface MessageCancelSearching {
-  messageType: 'cancel'
+  messageType: MessageType.CANCEL_GAME
 }
 
 export interface MessageCloseGame {
-  messageType: 'close'
+  messageType: MessageType.CLOSE_GAME
 }
 
 export interface MessageGameStarted {
-  messageType: 'started'
+  messageType: MessageType.GAME_STARTED
   isPlayingCrosses: boolean
 }
 
 export interface MessageYouAreWinner {
-  messageType: 'winner'
+  messageType: MessageType.YOU_ARE_WINNER
 }
 
 export interface MessageDraw {
-  messageType: 'draw'
+  messageType: MessageType.DRAW
 }
 
 export interface MessageYouAreLooser {
-  messageType: 'looser'
+  messageType: MessageType.YOU_ARE_LOOSER
 }
 
 export interface MessageGameClosed {
-  messageType: 'closed'
+  messageType: MessageType.GAME_CLOSED
 }

@@ -18,6 +18,6 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	fmt.Printf("Preparing to listen on port %s...", port)
+	fmt.Printf("Preparing to listen on port %s...\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

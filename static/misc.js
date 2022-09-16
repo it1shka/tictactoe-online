@@ -1,3 +1,4 @@
+import Chat from './Chat.js';
 export function find(query) {
     const element = document.querySelector(query);
     if (!element) {
@@ -61,4 +62,8 @@ export function websocketCloseReason(code) {
         case 1015: return "failure to perform a TLS handshake";
         default: return "unknown reason";
     }
+}
+export function chatAndAlert(message) {
+    showAlert(message);
+    Chat.pushModalMessage(message);
 }

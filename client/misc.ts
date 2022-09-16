@@ -1,3 +1,5 @@
+import Chat from './Chat.js'
+
 export function find<T extends Element = Element>(query: string) {
   const element = document.querySelector(query)
   if(!element) {
@@ -68,4 +70,9 @@ export function websocketCloseReason(code: number): string {
     case 1015: return "failure to perform a TLS handshake"
     default: return "unknown reason"
   }
+}
+
+export function chatAndAlert(message: string) {
+  showAlert(message)
+  Chat.pushModalMessage(message)
 }

@@ -23,3 +23,9 @@ find<HTMLButtonElement>('#cancel-game').onclick = () => {
 Network.on(MessageType.GAME_STARTED, ({ isPlayingCrosses }) => {
   gameStarted(isPlayingCrosses)
 })
+
+const setStartScreen = () => 
+  GameWindow.layout = 'no-game'
+
+Network.onEvent('open', setStartScreen)
+Network.onEvent('close', setStartScreen)
