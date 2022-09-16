@@ -16,6 +16,9 @@ const (
 	MessageYouAreLooser = MessageType("looser")
 	MessageDraw         = MessageType("draw")
 	MessageGameClosed   = MessageType("closed")
+	// messages dedicated to time
+	MessageTick    = MessageType("tick")
+	MessageTimeout = MessageType("timeout")
 )
 
 func SendTextMessageTo(player *Player, message string) {
@@ -61,5 +64,17 @@ func SendDrawMessageTo(player *Player) {
 func SendOpponentClosedGameTo(player *Player) {
 	player.SendToClient(map[string]any{
 		"messageType": MessageGameClosed,
+	})
+}
+
+func SendTickMessageTo(player *Player) {
+	player.SendToClient(map[string]any{
+		"messageType": MessageTick,
+	})
+}
+
+func SendTimeoutMessageTo(player *Player) {
+	player.SendToClient(map[string]any{
+		"messageType": MessageTimeout,
 	})
 }

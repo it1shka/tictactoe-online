@@ -52,6 +52,22 @@ func SetInfiniteLoop(duration time.Duration, function func()) {
 	}()
 }
 
+func SetInterval(interval time.Duration, function func(quit chan struct{})) {
+	ticker := time.NewTicker(interval)
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				function(quit)
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+}
+
 var src = rand.NewSource(time.Now().UnixNano())
 var rnd = rand.New(src)
 

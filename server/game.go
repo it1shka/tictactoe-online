@@ -2,6 +2,7 @@ package server
 
 import (
 	"sync"
+	"time"
 
 	"it1shka.com/tictactoe-online/server/utils"
 )
@@ -16,9 +17,12 @@ const (
 
 // GAME
 
+const GAME_TIMEOUT = 60
+
 type Game struct {
 	sync.Mutex
 	crossesPlayer, zeroesPlayer *Player
+	crossesTime, zeroesTime     int
 	turn                        *Player
 	board                       [3][3]Figure
 	// finished when somebody wins,
@@ -31,6 +35,8 @@ func NewGame(player1, player2 *Player) *Game {
 	return &Game{
 		crossesPlayer: a,
 		zeroesPlayer:  b,
+		crossesTime:   GAME_TIMEOUT,
+		zeroesTime:    GAME_TIMEOUT,
 	}
 }
 
@@ -50,133 +56,46 @@ func (game *Game) figureOf(player *Player) Figure {
 	return FigureZero
 }
 
-// FUNCTIONS FOR BOARD CHECKING...
-
-func (game *Game) checkBoard() {
-	status := game.checkBoardStatus()
-	switch status {
-	case CrossesWin, ZeroesWin:
-		winner := game.winnerOf(status)
-		opponent := game.opponent(winner)
-		SendWinnerMessageTo(winner)
-		SendLooserMessageTo(opponent)
-	case Draw:
-		SendDrawMessageTo(game.crossesPlayer)
-		SendDrawMessageTo(game.zeroesPlayer)
+func (game *Game) decreaseTime() {
+	if game.turn == game.crossesPlayer {
+		game.crossesTime--
+		SendTickMessageTo(game.crossesPlayer)
+		return
 	}
-
-	if status != Unfinished {
-		game.finished = true
-	}
+	game.zeroesTime--
+	SendTickMessageTo(game.zeroesPlayer)
 }
 
-func (game *Game) winnerOf(status BoardStatus) *Player {
-	if status == CrossesWin {
+func (game *Game) timeoutPlayer() *Player {
+	if game.crossesTime <= 0 {
 		return game.crossesPlayer
 	}
-
-	if status == ZeroesWin {
-		return game.zeroesPlayer
-	}
-
-	return nil
+	return game.zeroesPlayer
 }
 
-type BoardStatus uint
+func (game *Game) setGameTimer() {
+	utils.SetInterval(time.Second, func(quit chan struct{}) {
+		game.Lock()
+		defer game.Unlock()
 
-const (
-	Unfinished BoardStatus = iota
-	Draw
-	CrossesWin
-	ZeroesWin
-)
-
-func (game *Game) checkBoardStatus() BoardStatus {
-	withSpaces := false
-	for _, row := range game.getAllRows() {
-		status := checkRowStatus(row)
-		switch status {
-		case WithSpaces:
-			withSpaces = true
-		case FullCrosses:
-			return CrossesWin
-		case FullZeroes:
-			return ZeroesWin
+		if game.closed || game.finished {
+			close(quit)
+			return
 		}
-	}
-	if withSpaces {
-		return Unfinished
-	}
-	return Draw
-}
 
-type RowStatus uint
-
-const (
-	WithSpaces RowStatus = iota
-	Mixed
-	FullCrosses
-	FullZeroes
-)
-
-func checkRowStatus(row [3]Figure) RowStatus {
-	crosses, zeroes := 0, 0
-	for i := 0; i < 3; i++ {
-		switch row[i] {
-		case FigureNothing:
-			return WithSpaces
-		case FigureCross:
-			crosses++
-		case FigureZero:
-			zeroes++
+		game.decreaseTime()
+		if game.crossesTime > 0 && game.zeroesTime > 0 {
+			return
 		}
-	}
-	if crosses == 3 {
-		return FullCrosses
-	}
-	if zeroes == 3 {
-		return FullZeroes
-	}
-	return Mixed
-}
 
-func (game *Game) getAllRows() [][3]Figure {
-	rows := [][3]Figure{}
-	for i := 0; i < 3; i++ {
-		rows = append(rows, game.getRow(i))
-		rows = append(rows, game.getColumn(i))
-	}
-	rows = append(rows, game.getFstDiagonal())
-	rows = append(rows, game.getSndDiagonal())
-	return rows
-}
+		lost := game.timeoutPlayer()
+		won := game.opponent(lost)
+		SendTimeoutMessageTo(lost)
+		SendLooserMessageTo(lost)
+		SendWinnerMessageTo(won)
+		game.finished = true
 
-func (game *Game) getRow(n int) [3]Figure {
-	return game.board[n]
-}
-
-func (game *Game) getColumn(n int) [3]Figure {
-	var col [3]Figure
-	for i := 0; i < 3; i++ {
-		col[i] = game.board[i][n]
-	}
-	return col
-}
-
-func (game *Game) getFstDiagonal() [3]Figure {
-	var diag [3]Figure
-	for i := 0; i < 3; i++ {
-		diag[i] = game.board[i][i]
-	}
-	return diag
-}
-
-func (game *Game) getSndDiagonal() [3]Figure {
-	var diag [3]Figure
-	for i := 0; i < 3; i++ {
-		diag[i] = game.board[i][2-i]
-	}
-	return diag
+	})
 }
 
 // PUBLIC INTERFACE
@@ -186,6 +105,7 @@ func (game *Game) StartGame() {
 	SendGameStartedMessageTo(game.crossesPlayer, true)
 	SendGameStartedMessageTo(game.zeroesPlayer, false)
 	game.turn = game.crossesPlayer
+	game.setGameTimer()
 }
 
 func (game *Game) SetFigure(author *Player, row, col int) {
